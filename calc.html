@@ -1,0 +1,349 @@
+<html>
+<head>
+<title>高速公路服务设施规模计算器.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bababa;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+高速公路服务设施规模计算器.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!DOCTYPE </span><span class="s2">html</span><span class="s0">&gt;</span>
+<span class="s0">&lt;html </span><span class="s2">lang</span><span class="s3">=&quot;zh-CN&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;head&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">charset</span><span class="s3">=&quot;UTF-8&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;viewport&quot; </span><span class="s2">content</span><span class="s3">=&quot;width=device-width, initial-scale=1.0&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;title&gt;</span><span class="s1">高速公路服务设施规模</span><span class="s0">&lt;/title&gt;</span>
+    <span class="s0">&lt;style&gt;</span>
+        <span class="s1">*{box-sizing:border-box;font-family:&quot;Microsoft Yahei&quot;,sans-serif;margin:0;padding:0}</span>
+        <span class="s1">body{background:#0e1116;padding:20px;max-width:1280px;margin:0 auto;color:#dce4df}</span>
+        <span class="s1">.container{background:#ffffff;padding:24px;border-radius:12px;box-shadow:0 4px 18px rgba(0,0,0,0.18);border:1px solid #d8e0dc}</span>
+
+        <span class="s1">/* 页眉 LOGO + 名称 */</span>
+        <span class="s1">.header{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:2px solid #008522;margin-bottom:20px;}</span>
+        <span class="s1">.logo-box{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#008522,#008522);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;letter-spacing:1px;box-shadow:0 2px 8px rgba(22,101,52,.4)}</span>
+        <span class="s1">.header-text h1{font-size:20px;color:#008522;margin-bottom:2px;}</span>
+        <span class="s1">.header-text p{font-size:13px;color:#008522;font-weight:600;letter-spacing:1px;}</span>
+
+        <span class="s1">/* 输入区同一水平线 */</span>
+        <span class="s1">.input-area{display:flex;align-items:end;gap:16px;margin-bottom:16px;flex-wrap:wrap;}</span>
+        <span class="s1">.item{flex:1;min-width:200px;}</span>
+        <span class="s1">.item label{display:block;margin-bottom:6px;font-weight:700;color:#008522;font-size:14px;}</span>
+        <span class="s1">.tip-small{font-size:12px;color:#6b8c77;margin-top:4px;font-weight:400}</span>
+        <span class="s1">.warn-text{color:#d32f2f;margin:10px 0;font-size:14px;font-weight:600}</span>
+
+        <span class="s1">/* 正常输入框：绿底白字，居中 */</span>
+        <span class="s1">.item input,.item select{width:100%;padding:10px 12px;border:1px solid #008522;border-radius:8px;font-size:15px;background:#008522;color:#ffffff;text-align:center;transition:all .2s;height:42px;}</span>
+        <span class="s1">.item input::placeholder{color:#e2e2e2;}</span>
+        <span class="s1">.item select{color:#ffffff;}</span>
+        <span class="s1">.item select option{color:#000000;background:#fff;}</span>
+
+        <span class="s1">/* 异常状态：红底白字 */</span>
+        <span class="s1">.input-warn{border:2px solid #ef4444 !important;background:#b91c1c !important;color:#ffffff !important;}</span>
+
+        <span class="s1">.item input:focus,.item select:focus{outline:none;border-color:#008522;box-shadow:0 0 0 3px rgba(0,133,34,.25);}</span>
+        <span class="s1">.input-warn:focus{box-shadow:0 0 0 3px rgba(239,68,68,.25);}</span>
+
+        <span class="s1">.btn-item{flex:1;min-width:200px;}</span>
+        <span class="s1">.btn-calc{width:100%;height:42px;border:none;border-radius:8px;background:#008522;color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;}</span>
+        <span class="s1">.btn-calc:hover{background:#006a19}</span>
+
+        <span class="s1">/* 服务区、停车区并排布局 */</span>
+        <span class="s1">.table-row-wrap{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px;}</span>
+        <span class="s1">.table-card{padding:16px;border-radius:10px;}</span>
+        <span class="s1">.serv-card{background:#e8f5e9;border:1px solid #a5d6a7;}</span>
+        <span class="s1">.park-card{background:#e3f2fd;border:1px solid #90caf9;}</span>
+        <span class="s1">.card-title{font-size:17px;font-weight:bold;margin-bottom:12px;padding-left:10px;border-left:4px solid;}</span>
+        <span class="s1">.serv-card .card-title{color:#008522;border-left-color:#008522;}</span>
+        <span class="s1">.park-card .card-title{color:#0d47a1;border-left-color:#1976d2;}</span>
+
+        <span class="s1">table{width:100%;border-collapse:collapse;font-size:14px;background:#ffffff}</span>
+        <span class="s1">.serv-card table th{background:#c8e6c9;color:#008522;}</span>
+        <span class="s1">.park-card table th{background:#bbdefb;color:#0d47a1;}</span>
+        <span class="s1">th,td{border:1px solid #d0d7e0;padding:10px;text-align:center;color:#22303a;}</span>
+        <span class="s1">.serv-card td{border-color:#d5e7d8;}</span>
+        <span class="s1">.park-card td{border-color:#d3e2f0;}</span>
+        <span class="s1">.serv-card tr:nth-child(even) td{background:#f5faf6;}</span>
+        <span class="s1">.park-card tr:nth-child(even) td{background:#f2f7fc;}</span>
+
+        <span class="s1">/* 计算依据 */</span>
+        <span class="s1">.basis-card{margin-top:26px;padding:16px 18px;border-radius:10px;background:#f4f8f5;border:1px solid #dbe6de;}</span>
+        <span class="s1">.basis-title{font-size:14px;font-weight:700;color:#008522;margin-bottom:8px;}</span>
+        <span class="s1">.basis-card ul{margin:0;padding-left:18px;display:grid;gap:5px;}</span>
+        <span class="s1">.basis-card li{font-size:13px;color:#3c4a42;}</span>
+
+        <span class="s1">.author-info{margin-top:18px;text-align:right;font-size:13px;color:#5a6f62;padding-top:10px;border-top:1px solid #dce6df;}</span>
+
+        <span class="s1">/* 密码遮罩层 */</span>
+        <span class="s1">.password-mask{position:fixed;inset:0;background:rgba(10,13,17,0.9);z-index:9999;display:flex;align-items:center;justify-content:center;}</span>
+        <span class="s1">.password-box{background:#ffffff;padding:30px;border-radius:12px;min-width:320px;border:1px solid #dbe6de;}</span>
+        <span class="s1">.password-box h3{margin-bottom:16px;color:#008522;text-align:center}</span>
+        <span class="s1">.password-box input{width:100%;padding:10px 12px;border:1px solid #008522;border-radius:8px;font-size:16px;margin-bottom:16px;background:#fff;color:#22303a;text-align:center;}</span>
+        <span class="s1">.password-box button{width:100%;background:#008522;color:#fff;border:none;padding:10px 12px;border-radius:8px;font-size:15px;cursor:pointer;}</span>
+        <span class="s1">.password-box button:hover{background:#006a19}</span>
+    <span class="s0">&lt;/style&gt;</span>
+<span class="s0">&lt;/head&gt;</span>
+<span class="s0">&lt;body&gt;</span>
+
+<span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;password-mask&quot; </span><span class="s2">id</span><span class="s3">=&quot;pwdMask&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;password-box&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;h3&gt;</span><span class="s1">PASSWORD</span><span class="s0">&lt;/h3&gt;</span>
+        <span class="s0">&lt;input </span><span class="s2">id</span><span class="s3">=&quot;pwdInput&quot; </span><span class="s2">type</span><span class="s3">=&quot;password&quot; </span><span class="s2">placeholder</span><span class="s3">=&quot;请输入密码&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;button </span><span class="s2">onclick</span><span class="s3">=&quot;checkPassword()&quot;</span><span class="s0">&gt;</span><span class="s1">确认进入</span><span class="s0">&lt;/button&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+<span class="s0">&lt;/div&gt;</span>
+
+<span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;container&quot; </span><span class="s2">id</span><span class="s3">=&quot;mainPage&quot; </span><span class="s2">style</span><span class="s3">=&quot;display:none;&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;header&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;logo-box&quot;</span><span class="s0">&gt;</span><span class="s1">云交</span><span class="s0">&lt;br&gt;</span><span class="s1">设计</span><span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;header-text&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;h1&gt;</span><span class="s1">高速公路服务设施规模</span><span class="s0">&lt;/h1&gt;</span>
+                   <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;input-area&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;item&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;label&gt;</span><span class="s1">预测主线交通量AADT（pcu/d）</span>
+                <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;tip-small&quot; </span><span class="s2">id</span><span class="s3">=&quot;qRangeTip&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+            <span class="s0">&lt;/label&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">id</span><span class="s3">=&quot;Qaadt&quot; </span><span class="s2">type</span><span class="s3">=&quot;number&quot; </span><span class="s2">value</span><span class="s3">=&quot;27800&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;item&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;label&gt;</span><span class="s1">双向车道数</span><span class="s0">&lt;/label&gt;</span>
+            <span class="s0">&lt;select </span><span class="s2">id</span><span class="s3">=&quot;lane&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;option </span><span class="s2">value</span><span class="s3">=&quot;4&quot;</span><span class="s0">&gt;</span><span class="s1">四车道</span><span class="s0">&lt;/option&gt;</span>
+                <span class="s0">&lt;option </span><span class="s2">value</span><span class="s3">=&quot;6&quot;</span><span class="s0">&gt;</span><span class="s1">六车道</span><span class="s0">&lt;/option&gt;</span>
+                <span class="s0">&lt;option </span><span class="s2">value</span><span class="s3">=&quot;8&quot;</span><span class="s0">&gt;</span><span class="s1">八车道</span><span class="s0">&lt;/option&gt;</span>
+            <span class="s0">&lt;/select&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;item&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;label&gt;</span><span class="s1">大型车比例μ（%）</span><span class="s0">&lt;/label&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">id</span><span class="s3">=&quot;mu&quot; </span><span class="s2">type</span><span class="s3">=&quot;number&quot; </span><span class="s2">value</span><span class="s3">=&quot;30&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;item btn-item&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;btn-calc&quot; </span><span class="s2">id</span><span class="s3">=&quot;btnCalc&quot; </span><span class="s2">type</span><span class="s3">=&quot;button&quot;</span><span class="s0">&gt;</span><span class="s1">计算</span><span class="s0">&lt;/button&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;warn-text&quot; </span><span class="s2">id</span><span class="s3">=&quot;warning&quot;</span><span class="s0">&gt;&lt;/div&gt;</span>
+
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;table-row-wrap&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;table-card serv-card&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;card-title&quot;</span><span class="s0">&gt;</span><span class="s1">服务区规模（双侧限值 / 单侧）</span><span class="s0">&lt;/div&gt;</span>
+            <span class="s0">&lt;table&gt;</span>
+                <span class="s0">&lt;thead&gt;</span>
+                <span class="s0">&lt;tr&gt;&lt;th&gt;</span><span class="s1">项目</span><span class="s0">&lt;/th&gt;&lt;th&gt;</span><span class="s1">双侧限值</span><span class="s0">&lt;/th&gt;&lt;th&gt;</span><span class="s1">单侧</span><span class="s0">&lt;/th&gt;&lt;/tr&gt;</span>
+                <span class="s0">&lt;/thead&gt;</span>
+                <span class="s0">&lt;tbody </span><span class="s2">id</span><span class="s3">=&quot;servTable&quot;</span><span class="s0">&gt;&lt;/tbody&gt;</span>
+            <span class="s0">&lt;/table&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;table-card park-card&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;card-title&quot;</span><span class="s0">&gt;</span><span class="s1">停车区规模（双侧限值 / 单侧）</span><span class="s0">&lt;/div&gt;</span>
+            <span class="s0">&lt;table&gt;</span>
+                <span class="s0">&lt;thead&gt;</span>
+                <span class="s0">&lt;tr&gt;&lt;th&gt;</span><span class="s1">项目</span><span class="s0">&lt;/th&gt;&lt;th&gt;</span><span class="s1">双侧限值</span><span class="s0">&lt;/th&gt;&lt;th&gt;</span><span class="s1">单侧</span><span class="s0">&lt;/th&gt;&lt;/tr&gt;</span>
+                <span class="s0">&lt;/thead&gt;</span>
+                <span class="s0">&lt;tbody </span><span class="s2">id</span><span class="s3">=&quot;parkTable&quot;</span><span class="s0">&gt;&lt;/tbody&gt;</span>
+            <span class="s0">&lt;/table&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;basis-card&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;basis-title&quot;</span><span class="s0">&gt;</span><span class="s1">计算依据</span><span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;ul&gt;</span>
+            <span class="s0">&lt;li&gt;</span><span class="s1">《公路服务设施设计规范》JTG_T3382-2026</span><span class="s0">&lt;/li&gt;</span>
+            <span class="s0">&lt;li&gt;</span><span class="s1">《公路工程项目建设用地指标》[2011]124号</span><span class="s0">&lt;/li&gt;</span>
+        <span class="s0">&lt;/ul&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;author-info&quot;</span><span class="s0">&gt;</span><span class="s1">AUTHOR：HLC</span><span class="s0">&lt;/div&gt;</span>
+<span class="s0">&lt;/div&gt;</span>
+
+<span class="s0">&lt;script&gt;</span>
+<span class="s1">// =========密码校验=========</span>
+<span class="s1">const correctPwd = &quot;HLC&quot;;</span>
+<span class="s1">function checkPassword(){</span>
+    <span class="s1">const val = document.getElementById(&quot;pwdInput&quot;).value.trim();</span>
+    <span class="s1">if(val === correctPwd){</span>
+        <span class="s1">document.getElementById(&quot;pwdMask&quot;).style.display = &quot;none&quot;;</span>
+        <span class="s1">document.getElementById(&quot;mainPage&quot;).style.display = &quot;block&quot;;</span>
+        <span class="s1">initApp();</span>
+    <span class="s1">}else{</span>
+        <span class="s1">alert(&quot;密码错误，请重新输入！&quot;);</span>
+        <span class="s1">document.getElementById(&quot;pwdInput&quot;).value = &quot;&quot;;</span>
+        <span class="s1">document.getElementById(&quot;pwdInput&quot;).focus();</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+<span class="s1">//回车触发确认</span>
+<span class="s1">document.getElementById(&quot;pwdInput&quot;).addEventListener(&quot;keydown&quot;,function(e){</span>
+    <span class="s1">if(e.key === &quot;Enter&quot;) checkPassword();</span>
+<span class="s1">});</span>
+
+<span class="s1">function initApp(){</span>
+    <span class="s1">const laneRange = {</span>
+        <span class="s1">4: [25000, 55000],</span>
+        <span class="s1">6: [45000, 80000],</span>
+        <span class="s1">8: [60000, 100000]</span>
+    <span class="s1">};</span>
+
+    <span class="s1">const servFactor = {</span>
+        <span class="s1">&quot;4_25000&quot;: [0.60,0.85,1.00,1.15,1.25],</span>
+        <span class="s1">&quot;4_40000&quot;: [0.64,0.90,1.09,1.25,1.35],</span>
+        <span class="s1">&quot;6_45000&quot;: [0.59,0.85,1.00,1.12,1.25],</span>
+        <span class="s1">&quot;6_60000&quot;: [0.73,0.99,1.20,1.38,1.51],</span>
+        <span class="s1">&quot;8_60000&quot;: [0.59,0.82,1.00,1.14,1.24],</span>
+        <span class="s1">&quot;8_80000&quot;: [0.65,0.93,1.09,1.24,1.36]</span>
+    <span class="s1">};</span>
+    <span class="s1">const parkFactor = {</span>
+        <span class="s1">&quot;4_25000&quot;: [0.81,0.92,1.00,1.08,1.16],</span>
+        <span class="s1">&quot;4_40000&quot;: [1.01,1.11,1.20,1.30,1.39],</span>
+        <span class="s1">&quot;6_45000&quot;: [0.82,0.91,1.00,1.09,1.16],</span>
+        <span class="s1">&quot;6_60000&quot;: [0.97,1.04,1.12,1.19,1.25],</span>
+        <span class="s1">&quot;8_60000&quot;: [0.87,0.93,1.00,1.06,1.10],</span>
+        <span class="s1">&quot;8_80000&quot;: [0.92,1.02,1.11,1.19,1.26]</span>
+    <span class="s1">};</span>
+    <span class="s1">const baseServ = { land:113, buildArea:6020.64, bigP:312, midP:74, smallP:74, toiletTotal:68, toiletM:26, toiletW:42 };</span>
+    <span class="s1">const basePark = { land:27, buildArea:1438.56, bigP:36, midP:10, smallP:32, toiletTotal:12, toiletM:4, toiletW:8 };</span>
+
+    <span class="s1">const qInput = document.getElementById(&quot;Qaadt&quot;);</span>
+    <span class="s1">const laneSel = document.getElementById(&quot;lane&quot;);</span>
+    <span class="s1">const muInput = document.getElementById(&quot;mu&quot;);</span>
+    <span class="s1">const qRangeTip = document.getElementById(&quot;qRangeTip&quot;);</span>
+
+    <span class="s1">function updateValidate(){</span>
+        <span class="s1">const lane = Number(laneSel.value);</span>
+        <span class="s1">const Q = Number(qInput.value);</span>
+        <span class="s1">const mu = Number(muInput.value);</span>
+        <span class="s1">const [rMin,rMax] = laneRange[lane];</span>
+        <span class="s1">qRangeTip.innerText = `当前车道查表区间：${rMin}‑${rMax}`;</span>
+
+        <span class="s1">if(isNaN(Q) || Q&lt;rMin || Q&gt;rMax){</span>
+            <span class="s1">qInput.classList.add(&quot;input-warn&quot;);</span>
+        <span class="s1">}else{</span>
+            <span class="s1">qInput.classList.remove(&quot;input-warn&quot;);</span>
+        <span class="s1">}</span>
+        <span class="s1">if(isNaN(mu)||mu&lt;0||mu&gt;100){</span>
+            <span class="s1">muInput.classList.add(&quot;input-warn&quot;);</span>
+        <span class="s1">}else{</span>
+            <span class="s1">muInput.classList.remove(&quot;input-warn&quot;);</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s1">function getMuIdx(mu){</span>
+        <span class="s1">if(mu&lt;10) return 0;</span>
+        <span class="s1">else if(mu&lt;=20) return 1;</span>
+        <span class="s1">else if(mu&lt;=30) return 2;</span>
+        <span class="s1">else if(mu&lt;=40) return 3;</span>
+        <span class="s1">else return 4;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">function getFactorKey(lane,Q){</span>
+        <span class="s1">if(lane===4){</span>
+            <span class="s1">if(Q&gt;=25000 &amp;&amp; Q&lt;=40000) return &quot;4_25000&quot;;</span>
+            <span class="s1">else if(Q&gt;40000 &amp;&amp; Q&lt;=55000) return &quot;4_40000&quot;;</span>
+        <span class="s1">}else if(lane===6){</span>
+            <span class="s1">if(Q&gt;=45000 &amp;&amp; Q&lt;=60000) return &quot;6_45000&quot;;</span>
+            <span class="s1">else if(Q&gt;60000 &amp;&amp; Q&lt;=80000) return &quot;6_60000&quot;;</span>
+        <span class="s1">}else if(lane===8){</span>
+            <span class="s1">if(Q&gt;=60000 &amp;&amp; Q&lt;=80000) return &quot;8_60000&quot;;</span>
+            <span class="s1">else if(Q&gt;80000 &amp;&amp; Q&lt;=100000) return &quot;8_80000&quot;;</span>
+        <span class="s1">}</span>
+        <span class="s1">return null;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">function calc(){</span>
+        <span class="s1">updateValidate();</span>
+        <span class="s1">const Q = Number(qInput.value);</span>
+        <span class="s1">const lane = Number(laneSel.value);</span>
+        <span class="s1">const mu = Number(muInput.value);</span>
+        <span class="s1">const warnDom = document.getElementById(&quot;warning&quot;);</span>
+        <span class="s1">warnDom.innerText=&quot;&quot;;</span>
+        <span class="s1">const [rMin,rMax] = laneRange[lane];</span>
+
+        <span class="s1">const fKey = getFactorKey(lane,Q);</span>
+        <span class="s1">if(!fKey){</span>
+            <span class="s1">warnDom.innerText=`⚠️警告：当前${lane}车道规范查表区间${rMin}～${rMax}，输入交通量${Q}不在查表区间内，计算结果仅供参考！`;</span>
+        <span class="s1">}</span>
+        <span class="s1">if(mu&lt;0 || mu&gt;100){</span>
+            <span class="s1">warnDom.innerText += &quot; ⚠️大型车比例μ应当在0‑100之间！&quot;;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">const muIdx = getMuIdx(mu);</span>
+        <span class="s1">let servCorr = 1;</span>
+        <span class="s1">let parkCorr = 1;</span>
+        <span class="s1">if(fKey){</span>
+            <span class="s1">servCorr = servFactor[fKey][muIdx];</span>
+            <span class="s1">parkCorr = parkFactor[fKey][muIdx];</span>
+        <span class="s1">}</span>
+
+        <span class="s1">const serv = {</span>
+            <span class="s1">land: Math.round(baseServ.land * servCorr),</span>
+            <span class="s1">buildArea: Math.round(baseServ.buildArea * servCorr*100)/100,</span>
+            <span class="s1">bigP: Math.round(baseServ.bigP * servCorr),</span>
+            <span class="s1">midP: Math.round(baseServ.midP * servCorr),</span>
+            <span class="s1">smallP: Math.round(baseServ.smallP * servCorr),</span>
+            <span class="s1">toiletTotal: Math.round(baseServ.toiletTotal * servCorr),</span>
+            <span class="s1">toiletM: Math.round(baseServ.toiletM * servCorr),</span>
+            <span class="s1">toiletW: Math.round(baseServ.toiletW * servCorr)</span>
+        <span class="s1">};</span>
+        <span class="s1">serv.chargeP = Math.round((serv.bigP+serv.midP+serv.smallP)*0.20);</span>
+
+        <span class="s1">const park = {</span>
+            <span class="s1">land: Math.round(basePark.land * parkCorr),</span>
+            <span class="s1">buildArea: Math.round(basePark.buildArea * parkCorr*100)/100,</span>
+            <span class="s1">bigP: Math.round(basePark.bigP * parkCorr),</span>
+            <span class="s1">midP: Math.round(basePark.midP * parkCorr),</span>
+            <span class="s1">smallP: Math.round(basePark.smallP * parkCorr),</span>
+            <span class="s1">toiletTotal: Math.round(basePark.toiletTotal * parkCorr),</span>
+            <span class="s1">toiletM: Math.round(basePark.toiletM * parkCorr),</span>
+            <span class="s1">toiletW: Math.round(basePark.toiletW * parkCorr)</span>
+        <span class="s1">};</span>
+        <span class="s1">park.chargeP = Math.round((park.bigP+park.midP+park.smallP)*0.20);</span>
+
+        <span class="s1">const sTbody = document.getElementById(&quot;servTable&quot;);</span>
+        <span class="s1">sTbody.innerHTML = `</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;用地规模(亩)&lt;/td&gt;&lt;td&gt;${serv.land}&lt;/td&gt;&lt;td&gt;${(serv.land/2).toFixed(1)}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;建筑最大占地面积(㎡)&lt;/td&gt;&lt;td&gt;${serv.buildArea}&lt;/td&gt;&lt;td&gt;${(serv.buildArea/2).toFixed(2)}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;大型车停车位&lt;/td&gt;&lt;td&gt;${serv.bigP}&lt;/td&gt;&lt;td&gt;${serv.bigP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;中型车停车位&lt;/td&gt;&lt;td&gt;${serv.midP}&lt;/td&gt;&lt;td&gt;${serv.midP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;小型车停车位&lt;/td&gt;&lt;td&gt;${serv.smallP}&lt;/td&gt;&lt;td&gt;${serv.smallP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;充电车位(20%)&lt;/td&gt;&lt;td&gt;${serv.chargeP}&lt;/td&gt;&lt;td&gt;${serv.chargeP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;公厕总厕位&lt;/td&gt;&lt;td&gt;${serv.toiletTotal}&lt;/td&gt;&lt;td&gt;${serv.toiletTotal/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;男厕位&lt;/td&gt;&lt;td&gt;${serv.toiletM}&lt;/td&gt;&lt;td&gt;${serv.toiletM/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;女厕位&lt;/td&gt;&lt;td&gt;${serv.toiletW}&lt;/td&gt;&lt;td&gt;${serv.toiletW/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">`;</span>
+        <span class="s1">const pTbody = document.getElementById(&quot;parkTable&quot;);</span>
+        <span class="s1">pTbody.innerHTML = `</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;用地规模(亩)&lt;/td&gt;&lt;td&gt;${park.land}&lt;/td&gt;&lt;td&gt;${(park.land/2).toFixed(1)}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;建筑最大占地面积(㎡)&lt;/td&gt;&lt;td&gt;${park.buildArea}&lt;/td&gt;&lt;td&gt;${(park.buildArea/2).toFixed(2)}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;大型车停车位&lt;/td&gt;&lt;td&gt;${park.bigP}&lt;/td&gt;&lt;td&gt;${park.bigP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;中型车停车位&lt;/td&gt;&lt;td&gt;${park.midP}&lt;/td&gt;&lt;td&gt;${park.midP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;小型车停车位&lt;/td&gt;&lt;td&gt;${park.smallP}&lt;/td&gt;&lt;td&gt;${park.smallP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;充电车位(20%)&lt;/td&gt;&lt;td&gt;${park.chargeP}&lt;/td&gt;&lt;td&gt;${park.chargeP/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;公厕总厕位&lt;/td&gt;&lt;td&gt;${park.toiletTotal}&lt;/td&gt;&lt;td&gt;${park.toiletTotal/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;男厕位&lt;/td&gt;&lt;td&gt;${park.toiletM}&lt;/td&gt;&lt;td&gt;${park.toiletM/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">&lt;tr&gt;&lt;td&gt;女厕位&lt;/td&gt;&lt;td&gt;${park.toiletW}&lt;/td&gt;&lt;td&gt;${park.toiletW/2}&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="s1">`;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">laneSel.addEventListener(&quot;change&quot;,()=&gt;{updateValidate();calc();});</span>
+    <span class="s1">qInput.addEventListener(&quot;input&quot;,updateValidate);</span>
+    <span class="s1">muInput.addEventListener(&quot;input&quot;,updateValidate);</span>
+    <span class="s1">document.getElementById(&quot;btnCalc&quot;).addEventListener(&quot;click&quot;, calc);</span>
+
+    <span class="s1">updateValidate();</span>
+    <span class="s1">calc();</span>
+<span class="s1">}</span>
+<span class="s0">&lt;/script&gt;</span>
+<span class="s0">&lt;/body&gt;</span>
+<span class="s0">&lt;/html&gt;</span>
+</pre>
+</body>
+</html>
